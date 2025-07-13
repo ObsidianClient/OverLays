@@ -3,106 +3,126 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Obsidian Overlay</title>
+  <title>Obsidian Client Overlay</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       width: 100vw;
       height: 100vh;
       background: #000;
-      color: white;
       font-family: 'Segoe UI', sans-serif;
+      color: white;
       overflow: hidden;
       position: relative;
     }
-    .logo {
+
+    .topbar {
+      width: 100%;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: absolute;
-      top: 20px;
-      left: 20px;
-      height: 80px;
-    }
-    .webcam {
-      position: absolute;
-      width: 400px;
-      height: 225px;
-      bottom: 20px;
-      left: 20px;
-      border: 4px solid white;
-      background-color: rgba(0, 0, 0, 0.4);
-    }
-    .chatbox {
-      position: absolute;
-      width: 350px;
-      height: 500px;
-      bottom: 20px;
-      right: 20px;
-      border: 4px solid white;
-      background-color: rgba(0, 0, 0, 0.4);
-    }
-    .socials {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 20px;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 6px 12px;
-      border-radius: 10px;
+      top: 0;
+      left: 0;
+      z-index: 10;
     }
 
-    /* Styles */
+    .topbar-content {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
+      border-radius: 12px;
+    }
+
+    .topbar-content img {
+      height: 50px;
+    }
+
+    .topbar-content .text {
+      font-size: 20px;
+    }
+
+    .topbar-content .download-link {
+      margin-left: auto;
+      background: #00ffe7;
+      color: black;
+      font-weight: bold;
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .topbar-content .download-link:hover {
+      background: #00c5b4;
+    }
+
+    /* Theme Styles */
     body.dark {
       background-color: #0e0e0e;
       color: #fff;
     }
+
     body.neon {
       background: linear-gradient(135deg, #000000, #1f1f1f);
       color: #00ffe7;
     }
+
     body.minimal {
       background-color: #ffffff;
       color: #000;
     }
-    body.minimal .webcam, body.minimal .chatbox {
-      border-color: #000;
-      background-color: rgba(255, 255, 255, 0.5);
+
+    body.minimal .topbar-content {
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    body.minimal .download-link {
+      background: #000;
+      color: white;
+    }
+
+    body.minimal .download-link:hover {
+      background: #444;
     }
   </style>
 </head>
 <body>
-  <img id="logo" class="logo" src="" alt="Obsidian Logo" style="display:none;" />
-  <div id="webcam" class="webcam" style="display:none;"></div>
-  <div id="chatbox" class="chatbox" style="display:none;"></div>
-  <div id="socials" class="socials" style="display:none;"></div>
+  <div class="topbar">
+    <div class="topbar-content">
+      <img id="logo" src="" alt="Obsidian Logo" style="display: none;" />
+      <div class="text">Download Obsidian Client</div>
+      <a id="downloadBtn" class="download-link" href="#" target="_blank" style="display: none;">Download Now</a>
+    </div>
+  </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const style = params.get("style") || "dark";
     const logoURL = params.get("logo");
-    const webcam = params.get("webcam") === "true";
-    const chat = params.get("chat") === "true";
-    const socials = params.get("socials");
+    const downloadURL = params.get("download");
 
     document.body.classList.add(style);
 
+    const logoImg = document.getElementById("logo");
+    const downloadBtn = document.getElementById("downloadBtn");
+
     if (logoURL) {
-      const logo = document.getElementById("logo");
-      logo.src = logoURL;
-      logo.style.display = "block";
+      logoImg.src = logoURL;
+      logoImg.style.display = "block";
     }
 
-    if (webcam) {
-      document.getElementById("webcam").style.display = "block";
-    }
-
-    if (chat) {
-      document.getElementById("chatbox").style.display = "block";
-    }
-
-    if (socials) {
-      const socialBox = document.getElementById("socials");
-      socialBox.innerText = socials;
-      socialBox.style.display = "block";
+    if (downloadURL) {
+      downloadBtn.href = downloadURL;
+      downloadBtn.style.display = "inline-block";
     }
   </script>
 </body>
