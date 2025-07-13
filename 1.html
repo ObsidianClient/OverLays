@@ -3,126 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Obsidian Client Overlay</title>
+  <title>Obsidian Stream Overlay</title>
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
       width: 100vw;
       height: 100vh;
-      background: #000;
+      background: transparent;
       font-family: 'Segoe UI', sans-serif;
-      color: white;
       overflow: hidden;
-      position: relative;
     }
 
     .topbar {
-      width: 100%;
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 10;
-    }
-
-    .topbar-content {
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       align-items: center;
       gap: 20px;
-      background: rgba(0, 0, 0, 0.5);
       padding: 10px 20px;
       border-radius: 12px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 22px;
+      backdrop-filter: blur(6px);
     }
 
-    .topbar-content img {
-      height: 50px;
+    .topbar img {
+      height: 40px;
     }
 
-    .topbar-content .text {
-      font-size: 20px;
-    }
-
-    .topbar-content .download-link {
-      margin-left: auto;
-      background: #00ffe7;
-      color: black;
-      font-weight: bold;
-      padding: 8px 14px;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: 0.2s ease;
-    }
-
-    .topbar-content .download-link:hover {
-      background: #00c5b4;
-    }
-
-    /* Theme Styles */
-    body.dark {
-      background-color: #0e0e0e;
-      color: #fff;
-    }
-
-    body.neon {
-      background: linear-gradient(135deg, #000000, #1f1f1f);
+    .topbar a {
       color: #00ffe7;
+      text-decoration: none;
+      font-weight: bold;
     }
 
-    body.minimal {
-      background-color: #ffffff;
-      color: #000;
-    }
-
-    body.minimal .topbar-content {
-      background: rgba(255, 255, 255, 0.7);
-    }
-
-    body.minimal .download-link {
-      background: #000;
+    /* Optional theme classes */
+    body.dark .topbar {
+      background-color: rgba(14, 14, 14, 0.6);
       color: white;
     }
 
-    body.minimal .download-link:hover {
-      background: #444;
+    body.neon .topbar {
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #00ffe7;
+    }
+
+    body.minimal .topbar {
+      background-color: rgba(255, 255, 255, 0.6);
+      color: black;
+    }
+
+    body.minimal .topbar a {
+      color: black;
     }
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="topbar-content">
-      <img id="logo" src="" alt="Obsidian Logo" style="display: none;" />
-      <div class="text">Download Obsidian Client</div>
-      <a id="downloadBtn" class="download-link" href="#" target="_blank" style="display: none;">Download Now</a>
-    </div>
+  <div class="topbar" id="topbar">
+    <span>Obsidian Client</span>
+    <img id="logo" src="" alt="Logo" style="display: none;" />
+    <a id="link" href="#" target="_blank">obsidianclient.pages.dev</a>
   </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const style = params.get("style") || "dark";
-    const logoURL = params.get("logo");
-    const downloadURL = params.get("download");
+    const logo = params.get("logo");
+    const url = params.get("url") || "https://obsidianclient.com";
 
     document.body.classList.add(style);
 
-    const logoImg = document.getElementById("logo");
-    const downloadBtn = document.getElementById("downloadBtn");
+    const logoEl = document.getElementById("logo");
+    const linkEl = document.getElementById("link");
 
-    if (logoURL) {
-      logoImg.src = logoURL;
-      logoImg.style.display = "block";
+    if (logo) {
+      logoEl.src = logo;
+      logoEl.style.display = "block";
     }
 
-    if (downloadURL) {
-      downloadBtn.href = downloadURL;
-      downloadBtn.style.display = "inline-block";
+    if (url) {
+      linkEl.href = url;
+      linkEl.textContent = url.replace(/^https?:\/\//, "");
     }
   </script>
 </body>
